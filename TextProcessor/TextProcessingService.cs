@@ -4,7 +4,7 @@
 	{
 		public string ProcessText(string input)
 		{
-			throw new NotImplementedException();
+			return input;
 		}
 	}
 }
