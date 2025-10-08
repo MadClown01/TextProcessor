@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace TextProcessor;
+namespace TextProcessorViews;
 
 /// <summary>
 /// Interaction logic for App.xaml

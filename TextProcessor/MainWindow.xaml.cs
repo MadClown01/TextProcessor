@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace TextProcessor
+namespace TextProcessorViews
 {
 	public partial class MainWindow : Window
 	{
