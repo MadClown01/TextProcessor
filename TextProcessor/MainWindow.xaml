@@ -6,19 +6,13 @@
 	<Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 
-		<TextBlock Grid.Row="0" Text="Choose a text file to count the occurrences of each word in the file."
-		   Margin="0, 10, 0, 10"
-		   TextWrapping="Wrap"
-		   HorizontalAlignment="Center"/>
-		
-		<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 10, 0, 10">
-			<Button Content="Select file" Click="Process_Click" Margin="5"/>
+		<StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+			<Button Content="Select a file" Click="Process_Click" Margin="5"/>
 		</StackPanel>
 
-		<TextBox x:Name="OutputTextBox" Grid.Row="2" IsReadOnly="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+		<TextBox x:Name="OutputTextBox" Grid.Row="1" IsReadOnly="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
 	</Grid>
 </Window>
