@@ -3,7 +3,7 @@
 namespace TextProcessorTesting
 {
 	[TestClass]
-	public class TextProcessorServicesTests
+	public class FileReaderTests
 	{
 		private string _tempFilePath = string.Empty;
 
@@ -22,11 +22,14 @@ namespace TextProcessorTesting
 			}
 		}
 
-		[TestMethod]
-		public async Task FileReader_ShouldReturnString()
+		[DataTestMethod]
+		[DataRow("lorem ipsum")]
+		[DataRow("")]
+		[DataRow("line1\nline2\nline3")]
+		[DataRow("single line")]
+		public async Task FileReader_ShouldReadStringFromFile(string content)
 		{
 			// Arrange
-			var content = "lorem ipsum";
 			await File.WriteAllTextAsync(_tempFilePath, content);
 			var reader = new FileReader();
 
@@ -34,8 +37,9 @@ namespace TextProcessorTesting
 			string lines = reader.ReadFile(_tempFilePath);
 
 			// Assert
-			Assert.AreEqual(lines, content);
+			Assert.AreEqual(content, lines);
 		}
+
 	}
 
 	/// <summary>
