@@ -1,6 +1,7 @@
 ﻿using System.Windows;
+using TextProcessor.Interfaces;
 using TextProcessor.Services;
-using TextProcessorViews;
+using TextProcessor.Views;
 
 namespace TextProcessor
 {

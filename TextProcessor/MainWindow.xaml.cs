@@ -1,8 +1,8 @@
 ﻿using Microsoft.Win32;
 using System.Windows;
-using TextProcessor.Services;
+using TextProcessor.Interfaces;
 
-namespace TextProcessorViews
+namespace TextProcessor.Views
 {
 	public partial class MainWindow : Window
 	{

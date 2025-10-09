@@ -1,6 +1,6 @@
 ﻿using TextProcessor.Services;
 
-namespace TextProcessorTesting
+namespace TextProcessor.Testing
 {
 	[TestClass]
 	public class FileReaderTests

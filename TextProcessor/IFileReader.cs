@@ -1,4 +1,4 @@
-﻿namespace TextProcessor.Services
+﻿namespace TextProcessor.Interfaces
 {
 	public interface IFileReader
 	{
