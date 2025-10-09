@@ -6,12 +6,12 @@ namespace TextProcessorViews
 {
 	public partial class MainWindow : Window
 	{
-		private readonly ITextProcessingService _textService;
+		private readonly IFileReader _fileReader;
 
-		public MainWindow(ITextProcessingService textService)
+		public MainWindow(IFileReader fileReader)
 		{
 			InitializeComponent();
-			_textService = textService;
+			_fileReader = fileReader;
 		}
 
 		private void Process_Click(object sender, RoutedEventArgs e)
@@ -27,13 +27,8 @@ namespace TextProcessorViews
 			if (result == true) // user clicked OK
 			{
 				string selectedFilePath = dialog.FileName;
-				// pass this path to your TextProcessingService
+				OutputTextBox.Text = _fileReader.ReadFile(selectedFilePath);
 			}
-		}
-
-		private void Clear_Click(object sender, RoutedEventArgs e)
-		{
-			OutputTextBox.Clear();
 		}
 	}
 }

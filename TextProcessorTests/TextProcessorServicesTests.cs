@@ -23,22 +23,23 @@ namespace TextProcessorTesting
 		}
 
 		[TestMethod]
-		public void Processor_ShouldReturnString()
+		public async Task FileReader_ShouldReturnString()
 		{
 			// Arrange
-			var service = new TextProcessingService();
-			string input = "hello";
+			var content = "lorem ipsum";
+			await File.WriteAllTextAsync(_tempFilePath, content);
+			var reader = new FileReader();
 
 			// Act
-			string result = service.ProcessText(input);
+			string lines = reader.ReadFile(_tempFilePath);
 
 			// Assert
-			Assert.AreEqual("hello", result);
+			Assert.AreEqual(lines, content);
 		}
 	}
 
 	/// <summary>
-	/// Confirm that usage of files behaves as expected.
+	/// Confirm that usage of files behaves in the current environment as expected.
 	/// </summary>
 	[TestClass]
 	public class FileUtilityTests

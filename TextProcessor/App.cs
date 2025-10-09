@@ -8,7 +8,7 @@ namespace TextProcessor
 	{
 		private void ApplicationStartup(object sender, StartupEventArgs args)
 		{
-			ITextProcessingService service = new TextProcessingService();
+			IFileReader service = new FileReader();
 			MainWindow window = new MainWindow(service);
 			window.Show();
 		}
