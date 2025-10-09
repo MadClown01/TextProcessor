@@ -2,6 +2,6 @@
 {
 	public interface IFileReader
 	{
-		string ReadFile(string filePath);
+		IAsyncEnumerable<string> ReadLinesAsync(string filePath);
 	}
 }

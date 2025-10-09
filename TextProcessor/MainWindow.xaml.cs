@@ -27,7 +27,7 @@ namespace TextProcessor.Views
 			if (result == true) // user clicked OK
 			{
 				string selectedFilePath = dialog.FileName;
-				OutputTextBox.Text = _fileReader.ReadFile(selectedFilePath);
+				OutputTextBox.Text += _fileReader.ReadLinesAsync(selectedFilePath);
 			}
 		}
 	}

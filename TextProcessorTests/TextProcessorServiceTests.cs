@@ -24,18 +24,27 @@ namespace TextProcessor.Testing
 		}
 
 		[DataTestMethod]
-		[DataRow("lorem ipsum")]
 		[DataRow("")]
-		[DataRow("line1\nline2\nline3")]
 		[DataRow("single line")]
-		public async Task FileReader_ShouldReadStringFromFile(string content)
+		[DataRow("line1\nline2\nline3")]
+		[DataRow(
+			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua" +
+			"\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua" +
+			"\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
+			)]
+		public async Task FileReader_ReadsLinesFromFile(string content)
 		{
 			// Arrange
 			await File.WriteAllTextAsync(_tempFilePath, content);
 			var reader = new FileReader();
 
 			// Act
-			string lines = reader.ReadFile(_tempFilePath);
+			var linesList = new List<string>();
+			await foreach (var line in reader.ReadLinesAsync(_tempFilePath))
+			{
+				linesList.Add(line);
+			}
+			string lines = string.Join("\n", linesList);
 
 			// Assert
 			Assert.AreEqual(content, lines);
