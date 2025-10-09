@@ -9,8 +9,10 @@ namespace TextProcessor
 	{
 		private void ApplicationStartup(object sender, StartupEventArgs args)
 		{
-			IFileReader service = new FileReader();
-			MainWindow window = new MainWindow(service);
+			IFileReader fileReader = new FileReader();
+			ITokeniser tokeniser = new Tokeniser();
+			IWordCounter wordCounter = new WordCounter();
+			MainWindow window = new MainWindow(fileReader, tokeniser, wordCounter);
 			window.Show();
 		}
 	}

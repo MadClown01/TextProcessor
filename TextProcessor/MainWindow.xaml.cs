@@ -1,18 +1,23 @@
 ﻿using Microsoft.Win32;
 using System.Windows;
-using System.Windows.Controls;
 using TextProcessor.Interfaces;
+using TextProcessor.Services;
 
 namespace TextProcessor.Views
 {
 	public partial class MainWindow : Window
 	{
 		private readonly IFileReader _fileReader;
+		private readonly ITokeniser _tokeniser;
+		private readonly IWordCounter _wordCounter;
 
-		public MainWindow(IFileReader fileReader)
+		public MainWindow(IFileReader fileReader, ITokeniser tokeniser, IWordCounter wordCounter)
 		{
-			InitializeComponent();
 			_fileReader = fileReader;
+			_tokeniser = tokeniser;
+			_wordCounter = wordCounter;
+
+			InitializeComponent();
 		}
 
 		private void OnSelectFileClick(object sender, RoutedEventArgs e)
@@ -38,7 +43,13 @@ namespace TextProcessor.Views
 			{
 				await foreach (var line in _fileReader.ReadLinesAsync(filePath))
 				{
-					OutputTextBox.AppendText(line + "\n");
+					var words = _tokeniser.TokeniseLine(line);
+					_wordCounter.CountWords(words);
+				}
+
+				foreach (var kvp in _wordCounter.GetCounts())
+				{
+					OutputTextBox.AppendText($"{kvp.Key}: {kvp.Value}\n");
 				}
 
 				MessageBox.Show(
