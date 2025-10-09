@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System.Windows;
+using System.Windows.Controls;
 using TextProcessor.Interfaces;
 
 namespace TextProcessor.Views
@@ -14,7 +15,7 @@ namespace TextProcessor.Views
 			_fileReader = fileReader;
 		}
 
-		private void Process_Click(object sender, RoutedEventArgs e)
+		private void OnSelectFileClick(object sender, RoutedEventArgs e)
 		{
 			var dialog = new OpenFileDialog
 			{
@@ -26,8 +27,35 @@ namespace TextProcessor.Views
 
 			if (result == true) // user clicked OK
 			{
-				string selectedFilePath = dialog.FileName;
-				OutputTextBox.Text += _fileReader.ReadLinesAsync(selectedFilePath);
+				ProcessFile(dialog.FileName);
+			}
+		}
+
+		private async void ProcessFile(string filePath)
+		{
+			OutputTextBox.Text = string.Empty;
+			try
+			{
+				await foreach (var line in _fileReader.ReadLinesAsync(filePath))
+				{
+					OutputTextBox.AppendText(line + "\n");
+				}
+
+				MessageBox.Show(
+					$"Counted the words in the file",
+					"Success",
+					MessageBoxButton.OK,
+					MessageBoxImage.Information
+					);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(
+					$"Failed to read file:\n{ex.Message}",
+					"Error",
+					MessageBoxButton.OK,
+					MessageBoxImage.Error
+					);
 			}
 		}
 	}
