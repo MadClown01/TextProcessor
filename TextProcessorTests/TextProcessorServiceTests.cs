@@ -101,6 +101,23 @@ namespace TextProcessor.Testing
 				tokens
 			);
 		}
+
+		[TestMethod]
+		public void WordCounter_CountsTokens()
+		{
+			// Arrange
+			string[] tokens = new string[] { "a", "a", "b", "a", "c", "c" };
+			var counter = new WordCounter();
+
+			// Act
+			counter.CountWords(tokens);
+			IReadOnlyDictionary<string, int> counts = counter.GetCounts();
+
+			// Assert
+			Assert.AreEqual(counts["a"], 3);
+			Assert.AreEqual(counts["b"], 1);
+			Assert.AreEqual(counts["c"], 2);
+		}
 	}
 
 	/// <summary>
