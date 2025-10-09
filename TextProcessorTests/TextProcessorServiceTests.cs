@@ -1,4 +1,5 @@
-﻿using TextProcessor.Services;
+﻿using TextProcessor.Interfaces;
+using TextProcessor.Services;
 
 namespace TextProcessor.Testing
 {
@@ -41,38 +42,55 @@ namespace TextProcessor.Testing
 		}
 
 		[TestMethod]
-		public void TextParser_ShouldReturnWordsFromLines()
+		public void Tokeniser_SplitsWordsCorrectly()
 		{
 			// Arrange
-			var parser = new TextParser();
-			var lines = new List<string> { "asdf\nlorem\nipsum" };
+			string line = "The quick brown fox";
+			var tokeniser = new Tokeniser();
 
 			// Act
-			IEnumerable<string> words = parser.ParseLines(lines);
+			var tokens = tokeniser.TokeniseLine(line).ToArray();
 
 			// Assert
 			CollectionAssert.AreEqual(
-				words.ToList(),
-				new List<string> { "asdf", "lorem", "ipsum" }
+				new[] { "The", "quick", "brown", "fox" },
+				tokens
 			);
 		}
+
 		[TestMethod]
-		public void TextParser_ShouldReturnSeperatedWords()
+		public void Tokeniser_HandlesExoticWhitespaceCharactersCorrectly()
 		{
 			// Arrange
-			var parser = new TextParser();
-			var lines = new List<string> { "asdf\nlorem\nipsum" };
+			string line = "The quick\tbrown\nfox\rjumps\fover\vthe  lazy"; // double space before 'lazy'
+			var tokeniser = new Tokeniser();
 
 			// Act
-			IEnumerable<string> words = parser.ParseLines(lines);
+			var tokens = tokeniser.TokeniseLine(line).ToArray();
 
 			// Assert
 			CollectionAssert.AreEqual(
-				words.ToList(),
-				new List<string> { "asdf", "lorem", "ipsum" }
+				new[] { "The", "quick", "brown", "fox", "jumps", "over", "the", "lazy"},
+				tokens
 			);
 		}
 
+		[TestMethod]
+		public void Tokeniser_HandlesTaskExample()
+		{
+			// Arrange
+			string line = "1:1 Adam Seth Enos\r\n1:2 Cainan Adam Seth Iared";
+			var tokeniser = new Tokeniser();
+
+			// Act
+			var tokens = tokeniser.TokeniseLine(line).ToArray();
+
+			// Assert
+			CollectionAssert.AreEqual(
+				new[] { "1:1", "Adam", "Seth", "Enos", "1:2", "Cainan", "Adam", "Seth", "Iared" },
+				tokens
+			);
+		}
 	}
 
 	/// <summary>
