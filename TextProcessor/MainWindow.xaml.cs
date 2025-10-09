@@ -38,6 +38,9 @@ namespace TextProcessor.Views
 
 		private async void ProcessFile(string filePath)
 		{
+			var dialog = new ProcessingDialog { Owner = this };
+			dialog.Show();
+
 			OutputTextBox.Text = string.Empty;
 			try
 			{
@@ -52,6 +55,8 @@ namespace TextProcessor.Views
 					OutputTextBox.AppendText($"{kvp.Key}: {kvp.Value}\n");
 				}
 
+				dialog.Close();
+
 				MessageBox.Show(
 					$"Counted the words in the file",
 					"Success",
@@ -59,8 +64,19 @@ namespace TextProcessor.Views
 					MessageBoxImage.Information
 					);
 			}
+			catch (OperationCanceledException)
+			{
+				dialog.Close();
+				MessageBox.Show(
+					"Processing canceled.",
+					"Canceled",
+					MessageBoxButton.OK,
+					MessageBoxImage.Information
+					);
+			}
 			catch (Exception ex)
 			{
+				dialog.Close();
 				MessageBox.Show(
 					$"Failed to read file:\n{ex.Message}",
 					"Error",
