@@ -3,7 +3,7 @@
 namespace TextProcessor.Testing
 {
 	[TestClass]
-	public class FileReaderTests
+	public class TextProcessorServiceTests
 	{
 		private string _tempFilePath = string.Empty;
 
@@ -38,6 +38,39 @@ namespace TextProcessor.Testing
 
 			// Assert
 			Assert.AreEqual(content, lines);
+		}
+
+		[TestMethod]
+		public void TextParser_ShouldReturnWordsFromLines()
+		{
+			// Arrange
+			var parser = new TextParser();
+			var lines = new List<string> { "asdf\nlorem\nipsum" };
+
+			// Act
+			IEnumerable<string> words = parser.ParseLines(lines);
+
+			// Assert
+			CollectionAssert.AreEqual(
+				words.ToList(),
+				new List<string> { "asdf", "lorem", "ipsum" }
+			);
+		}
+		[TestMethod]
+		public void TextParser_ShouldReturnSeperatedWords()
+		{
+			// Arrange
+			var parser = new TextParser();
+			var lines = new List<string> { "asdf\nlorem\nipsum" };
+
+			// Act
+			IEnumerable<string> words = parser.ParseLines(lines);
+
+			// Assert
+			CollectionAssert.AreEqual(
+				words.ToList(),
+				new List<string> { "asdf", "lorem", "ipsum" }
+			);
 		}
 
 	}
