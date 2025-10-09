@@ -62,7 +62,8 @@ namespace TextProcessor.Testing
 		public void Tokeniser_HandlesExoticWhitespaceCharactersCorrectly()
 		{
 			// Arrange
-			string line = "The quick\tbrown\nfox\rjumps\fover\vthe  lazy"; // double space before 'lazy'
+			// Testing with space, tab, LF, CR, vertical tab, form feed, double space
+			string line = "The quick\tbrown\nfox\rjumps\vover\fthe  lazy";
 			var tokeniser = new Tokeniser();
 
 			// Act
