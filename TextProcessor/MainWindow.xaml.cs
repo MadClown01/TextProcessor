@@ -1,20 +1,21 @@
 ﻿using Microsoft.Win32;
 using System.Windows;
+using TextProcessor.Services;
 
 namespace TextProcessorViews
 {
 	public partial class MainWindow : Window
 	{
-		public MainWindow()
+		private readonly ITextProcessingService _textService;
+
+		public MainWindow(ITextProcessingService textService)
 		{
 			InitializeComponent();
+			_textService = textService;
 		}
 
 		private void Process_Click(object sender, RoutedEventArgs e)
 		{
-			// Temporary stub logic
-			//OutputTextBox.Text = new string(InputTextBox.Text);
-
 			var dialog = new OpenFileDialog
 			{
 				Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*",
