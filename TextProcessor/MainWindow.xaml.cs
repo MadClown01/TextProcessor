@@ -1,22 +1,16 @@
 ﻿using Microsoft.Win32;
 using System.Windows;
 using TextProcessor.Interfaces;
-using TextProcessor.Services;
 
 namespace TextProcessor.Views
 {
 	public partial class MainWindow : Window
 	{
-		private readonly IFileReader _fileReader;
-		private readonly ITokeniser _tokeniser;
-		private readonly IWordCounter _wordCounter;
+		private readonly IFileProcessor _fileProcessor;
 
-		public MainWindow(IFileReader fileReader, ITokeniser tokeniser, IWordCounter wordCounter)
+		public MainWindow(IFileProcessor fileProcessor)
 		{
-			_fileReader = fileReader;
-			_tokeniser = tokeniser;
-			_wordCounter = wordCounter;
-
+			_fileProcessor = fileProcessor;
 			InitializeComponent();
 		}
 
@@ -44,21 +38,21 @@ namespace TextProcessor.Views
 			OutputTextBox.Text = string.Empty;
 			try
 			{
-				await foreach (var line in _fileReader.ReadLinesAsync(filePath))
-				{
-					var words = _tokeniser.TokeniseLine(line);
-					_wordCounter.CountWords(words);
-				}
+				var counts = await _fileProcessor.ProcessFileAsync(
+					filePath,
+					dialog.Progress,
+					dialog.CancellationToken
+					);
 
-				foreach (var kvp in _wordCounter.GetCounts())
+				// need to make this async
+				foreach (var kvp in counts)
 				{
 					OutputTextBox.AppendText($"{kvp.Key}: {kvp.Value}\n");
 				}
-
 				dialog.Close();
 
 				MessageBox.Show(
-					$"Counted the words in the file",
+					$"Counted occurrences for {counts.Count} unique words",
 					"Success",
 					MessageBoxButton.OK,
 					MessageBoxImage.Information

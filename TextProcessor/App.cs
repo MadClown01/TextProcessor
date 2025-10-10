@@ -11,8 +11,8 @@ namespace TextProcessor
 		{
 			IFileReader fileReader = new FileReader();
 			ITokeniser tokeniser = new Tokeniser();
-			IWordCounter wordCounter = new WordCounter();
-			MainWindow window = new MainWindow(fileReader, tokeniser, wordCounter);
+			IFileProcessor fileProcessor = new FileProcessor(fileReader, tokeniser);
+			MainWindow window = new MainWindow(fileProcessor);
 			window.Show();
 		}
 	}

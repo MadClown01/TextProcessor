@@ -117,6 +117,8 @@ namespace TextProcessor.Testing
 			Assert.AreEqual(counts["b"], 1);
 			Assert.AreEqual(counts["c"], 2);
 		}
+
+		[TestMethod]
 		public void WordCounter_HandlesTaskExample()
 		{
 			// Arrange
@@ -126,6 +128,31 @@ namespace TextProcessor.Testing
 			// Act
 			counter.CountWords(tokens);
 			IReadOnlyDictionary<string, int> counts = counter.GetCounts();
+
+			// Assert
+			Assert.AreEqual(counts["1:1"], 1);
+			Assert.AreEqual(counts["Adam"], 2);
+			Assert.AreEqual(counts["Seth"], 2);
+			Assert.AreEqual(counts["Enos"], 1);
+			Assert.AreEqual(counts["1:2"], 1);
+			Assert.AreEqual(counts["Cainan"], 1);
+			Assert.AreEqual(counts["Iared"], 1);
+		}
+
+		[TestMethod]
+		public async Task FileProcessor_CountsWordsInFile()
+		{
+			// Arrange
+			string content = "1:1 Adam Seth Enos\r\n1:2 Cainan Adam Seth Iared";
+			await File.WriteAllTextAsync(_tempFilePath, content);
+			var processor = new FileProcessor(new FileReader(), new Tokeniser());
+
+			// Act
+			IReadOnlyDictionary<string, int> counts = processor.ProcessFileAsync(
+				_tempFilePath,
+				null,
+				CancellationToken.None
+				).Result;
 
 			// Assert
 			Assert.AreEqual(counts["1:1"], 1);
