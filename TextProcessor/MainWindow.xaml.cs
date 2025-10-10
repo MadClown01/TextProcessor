@@ -35,8 +35,6 @@ namespace TextProcessor.Views
 		{
 			var dialog = new ProcessingDialog { Owner = this };
 			dialog.Show();
-
-			OutputTextBox.Text = string.Empty;
 			try
 			{
 				var counts = await _fileProcessor.ProcessFileAsync(
@@ -80,17 +78,24 @@ namespace TextProcessor.Views
 
 		private async Task PrintCountsAsync(IReadOnlyDictionary<string, int> counts, CancellationToken token)
 		{
+			var list = new List<WordCountItem>();
+
 			await Task.Run(() =>
 			{
-				var sb = new StringBuilder();
 				foreach (var kvp in counts)
 				{
 					token.ThrowIfCancellationRequested();
-					sb.AppendLine($"{kvp.Key}: {kvp.Value}");
+					list.Add(new WordCountItem { Word = kvp.Key, Count = kvp.Value });
 				}
-				Dispatcher.Invoke(() => OutputTextBox.Text = sb.ToString());
-			}, 
-			token);
+			}, token);
+
+			ResultsDataGrid.ItemsSource = list;
 		}
 	}
+}
+
+public class WordCountItem
+{
+	public string Word { get; set; } = string.Empty;
+	public int Count { get; set; }
 }
