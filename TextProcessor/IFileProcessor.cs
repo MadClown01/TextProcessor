@@ -2,6 +2,9 @@
 {
 	public interface IFileProcessor
 	{
-		public Task<IReadOnlyDictionary<string, int>> ProcessFileAsync(string filePath, IProgress<double> progress, CancellationToken token);
+		public Task<IReadOnlyDictionary<string, int>> ProcessFileAsync(
+			string filePath,
+			Action<long, long> reportProgress,
+			CancellationToken token);
 	}
 }

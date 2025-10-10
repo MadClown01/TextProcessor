@@ -23,7 +23,7 @@ namespace TextProcessor.Services
 
 		public async Task<IReadOnlyDictionary<string, int>> ProcessFileAsync(
 			string filePath,
-			IProgress<double> progress,
+			Action<long, long> reportProgress,
 			CancellationToken token)
 		{
 			var wordCounter = new WordCounter();
@@ -36,7 +36,7 @@ namespace TextProcessor.Services
 			{
 				var words = _tokeniser.TokeniseLine(line);
 				wordCounter.CountWords(words);
-				progress?.Report((double)bytesRead / totalBytes * 100);
+				reportProgress?.Invoke(bytesRead, totalBytes);
 			}
 
 			return wordCounter.GetCounts();
