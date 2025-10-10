@@ -31,7 +31,7 @@ namespace TextProcessor.Services
 			//var bytesRead = reader.BaseStream.Position;
 			//progress = (double)bytesRead / totalBytes;
 
-			await foreach (var line in _fileReader.ReadLinesAsync(filePath).WithCancellation(token))
+			await foreach (var line in _fileReader.ReadLinesAsync(filePath, token))
 			{
 				var words = _tokeniser.TokeniseLine(line);
 				wordCounter.CountWords(words);
