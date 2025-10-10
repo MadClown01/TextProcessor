@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System.Text;
 using System.Windows;
 using TextProcessor.Interfaces;
 
@@ -44,11 +45,8 @@ namespace TextProcessor.Views
 					dialog.CancellationToken
 					);
 
-				// need to make this async
-				foreach (var kvp in counts)
-				{
-					OutputTextBox.AppendText($"{kvp.Key}: {kvp.Value}\n");
-				}
+				await PrintCountsAsync(counts, dialog.CancellationToken);
+
 				dialog.Close();
 
 				MessageBox.Show(
@@ -78,6 +76,21 @@ namespace TextProcessor.Views
 					MessageBoxImage.Error
 					);
 			}
+		}
+
+		private async Task PrintCountsAsync(IReadOnlyDictionary<string, int> counts, CancellationToken token)
+		{
+			await Task.Run(() =>
+			{
+				var sb = new StringBuilder();
+				foreach (var kvp in counts)
+				{
+					token.ThrowIfCancellationRequested();
+					sb.AppendLine($"{kvp.Key}: {kvp.Value}");
+				}
+				Dispatcher.Invoke(() => OutputTextBox.Text = sb.ToString());
+			}, 
+			token);
 		}
 	}
 }
