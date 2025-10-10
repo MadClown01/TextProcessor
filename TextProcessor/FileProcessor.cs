@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Windows.Shapes;
 using TextProcessor.Interfaces;
 
 namespace TextProcessor.Services
@@ -31,12 +32,10 @@ namespace TextProcessor.Services
 			//var bytesRead = reader.BaseStream.Position;
 			//progress = (double)bytesRead / totalBytes;
 
-			await foreach (var line in _fileReader.ReadLinesAsync(filePath, token))
+			await foreach ((string line, long bytesRead) in _fileReader.ReadLinesAsync(filePath, token))
 			{
 				var words = _tokeniser.TokeniseLine(line);
 				wordCounter.CountWords(words);
-
-				var bytesRead = 1;//reader.BaseStream.Position;
 				progress?.Report((double)bytesRead / totalBytes * 100);
 			}
 

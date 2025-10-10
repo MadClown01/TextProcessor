@@ -3,13 +3,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using TextProcessor.Interfaces;
-using TextProcessor.Services;
 
 namespace TextProcessor.Services
 {
 	public class FileReader : IFileReader
 	{
-		public async IAsyncEnumerable<string> ReadLinesAsync(
+		public async IAsyncEnumerable<(string line, long bytesRead)> ReadLinesAsync(
 			string filePath,
 			[EnumeratorCancellation] CancellationToken token = default)
 		{
@@ -21,12 +20,13 @@ namespace TextProcessor.Services
 				4096,
 				FileOptions.Asynchronous);
 			using var reader = new StreamReader(stream);
-			string? line;
-			while ((line = await reader.ReadLineAsync()) != null)
+			string line;
+			while ((line = await reader.ReadLineAsync(token)) != null)
 			{
-				token.ThrowIfCancellationRequested();
-				yield return line;
+				long bytesRead = stream.Position;
+				yield return (line, bytesRead);
 			}
+
 		}
 	}
 }

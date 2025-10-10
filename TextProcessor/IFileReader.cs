@@ -2,6 +2,8 @@
 {
 	public interface IFileReader
 	{
-		IAsyncEnumerable<string> ReadLinesAsync(string filePath, CancellationToken token = default);
+		IAsyncEnumerable<(string line, long bytesRead)> ReadLinesAsync(
+			string filePath,
+			CancellationToken token = default);
 	}
 }

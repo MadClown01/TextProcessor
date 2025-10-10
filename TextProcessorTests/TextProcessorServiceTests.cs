@@ -39,7 +39,7 @@ namespace TextProcessor.Testing
 
 			// Act
 			var linesList = new List<string>();
-			await foreach (var line in reader.ReadLinesAsync(_tempFilePath))
+			await foreach ((string line, long bytesRead) in reader.ReadLinesAsync(_tempFilePath))
 			{
 				linesList.Add(line);
 			}
