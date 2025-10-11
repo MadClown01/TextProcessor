@@ -152,11 +152,11 @@ namespace TextProcessor.Testing
 			IReadOnlyDictionary<string, int> counts = new Dictionary<string, int>();
 
 			 // Act
-			counts = processor.ProcessFileAsync(
+			counts = await processor.ProcessFileAsync(
 				_tempFilePath,
 				progressReporter,
 				CancellationToken.None
-				).Result;
+				);
 
 			// Assert
 			Assert.AreEqual(counts["1:1"], 1);
