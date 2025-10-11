@@ -4,6 +4,7 @@
 	{
 		IAsyncEnumerable<(string line, long bytesRead)> ReadLinesAsync(
 			string filePath,
-			CancellationToken token = default);
+			CancellationToken token = default
+		);
 	}
 }

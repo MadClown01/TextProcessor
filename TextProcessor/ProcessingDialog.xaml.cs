@@ -41,7 +41,7 @@ namespace TextProcessor.Views
 					"Error",
 					MessageBoxButton.OK,
 					MessageBoxImage.Error
-					);
+				);
 				return;
 			}
 
@@ -59,7 +59,7 @@ namespace TextProcessor.Views
 					"Canceled",
 					MessageBoxButton.OK,
 					MessageBoxImage.Information
-					);
+				);
 			}
 			catch (Exception ex)
 			{
@@ -69,7 +69,7 @@ namespace TextProcessor.Views
 					"Error",
 					MessageBoxButton.OK,
 					MessageBoxImage.Error
-					);
+				);
 			}
 		}
 

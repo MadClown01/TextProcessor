@@ -18,7 +18,8 @@ namespace TextProcessor.Services
 				FileAccess.Read,
 				FileShare.Read,
 				4096,
-				FileOptions.Asynchronous);
+				FileOptions.Asynchronous
+			);
 			using var reader = new StreamReader(stream);
 			string line;
 			while ((line = await reader.ReadLineAsync(token)) != null)

@@ -32,7 +32,7 @@ namespace TextProcessor.Testing
 			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua" +
 			"\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua" +
 			"\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
-			)]
+		)]
 		public async Task FileReader_ReadsLinesFromFile(string content)
 		{
 			// Arrange

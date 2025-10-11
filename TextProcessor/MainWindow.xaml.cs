@@ -49,7 +49,7 @@ namespace TextProcessor.Views
 					"Success",
 					MessageBoxButton.OK,
 					MessageBoxImage.Information
-					);
+				);
 			}
 		}
 
@@ -68,8 +68,8 @@ namespace TextProcessor.Views
 						new WordCountItem {
 							Word = kvp.Key,
 							Count = kvp.Value
-							}
-						);
+						}
+					);
 				}
 				return tempList;
 			}, token);
@@ -84,8 +84,8 @@ namespace TextProcessor.Views
 					new SortDescription(
 						nameof(WordCountItem.Count),
 						ListSortDirection.Descending
-						)
-					);
+					)
+				);
 			}
 		}
 
