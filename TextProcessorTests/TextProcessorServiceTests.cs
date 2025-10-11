@@ -167,6 +167,36 @@ namespace TextProcessor.Testing
 			Assert.AreEqual(counts["Cainan"], 1);
 			Assert.AreEqual(counts["Iared"], 1);
 		}
+
+		[TestMethod]
+		public async Task FileProcessor_RespectsCancellationToken()
+		{
+			// Arrange
+			string content = string.Join(
+				Environment.NewLine,
+				Enumerable.Repeat("The quick brown fox jumped over the lazy dog", 1000)
+			);
+			await File.WriteAllTextAsync(_tempFilePath, content);
+
+			var processor = new FileProcessor(new FileReader(), new Tokeniser());
+			var progressReporter = new TestProgressReporter();
+			using var cts = new CancellationTokenSource();
+
+			// Act
+			var processingTask = processor.ProcessFileAsync(
+				_tempFilePath,
+				progressReporter,
+				cts.Token
+			);
+
+			// Cancel almost immediately
+			cts.Cancel();
+
+			// Assert
+			await Assert.ThrowsExceptionAsync<TaskCanceledException>(
+				async () => await processingTask
+			);
+		}
 	}
 	public class TestProgressReporter : IProgressReporter
 	{
