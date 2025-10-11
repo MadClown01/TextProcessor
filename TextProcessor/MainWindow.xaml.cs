@@ -121,7 +121,6 @@ namespace TextProcessor.Views
 						)
 					);
 			}
-			ResultsDataGrid.Items.Refresh();
 		}
 
 	}
