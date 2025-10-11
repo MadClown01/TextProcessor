@@ -3,17 +3,17 @@ using TextProcessor.Interfaces;
 
 namespace TextProcessor.Views
 {
-    public partial class ProcessingDialog : Window, IProgressReporter
+	public partial class ProcessingDialog : Window, IProgressReporter
 	{
-        private readonly CancellationTokenSource _cts = new();
-        public CancellationToken CancellationToken => _cts.Token;
-        public IProgress<double> Progress { get; }
+		private readonly CancellationTokenSource _cts = new();
+		public CancellationToken CancellationToken => _cts.Token;
+		public IProgress<double> Progress { get; }
 
-        public ProcessingDialog()
-        {
-            InitializeComponent();
-            Progress = new Progress<double>(value => ProgressBar.Value = value);
-        }
+		public ProcessingDialog()
+		{
+			InitializeComponent();
+			Progress = new Progress<double>(value => ProgressBar.Value = value);
+		}
 
 		public void Report(long bytesRead, long totalBytes)
 		{
@@ -24,8 +24,8 @@ namespace TextProcessor.Views
 		}
 
 		private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            _cts.Cancel();
-        }
+		{
+			_cts.Cancel();
+		}
 	}
 }
