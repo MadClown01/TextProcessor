@@ -1,4 +1,6 @@
-﻿using TextProcessor.Services;
+﻿using System.Windows;
+using TextProcessor.Interfaces;
+using TextProcessor.Services;
 
 namespace TextProcessor.Testing
 {
@@ -146,11 +148,13 @@ namespace TextProcessor.Testing
 			string content = "1:1 Adam Seth Enos\r\n1:2 Cainan Adam Seth Iared";
 			await File.WriteAllTextAsync(_tempFilePath, content);
 			var processor = new FileProcessor(new FileReader(), new Tokeniser());
+			var progressReporter = new TestProgressReporter();
+			IReadOnlyDictionary<string, int> counts = new Dictionary<string, int>();
 
-			// Act
-			IReadOnlyDictionary<string, int> counts = processor.ProcessFileAsync(
+			 // Act
+			counts = processor.ProcessFileAsync(
 				_tempFilePath,
-				null,
+				progressReporter,
 				CancellationToken.None
 				).Result;
 
@@ -163,5 +167,9 @@ namespace TextProcessor.Testing
 			Assert.AreEqual(counts["Cainan"], 1);
 			Assert.AreEqual(counts["Iared"], 1);
 		}
+	}
+	public class TestProgressReporter : IProgressReporter
+	{
+		public void Report(long bytesRead, long totalBytes) {}
 	}
 }

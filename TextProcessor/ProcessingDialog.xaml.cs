@@ -1,9 +1,10 @@
 ﻿using System.Windows;
+using TextProcessor.Interfaces;
 
 namespace TextProcessor.Views
 {
-    public partial class ProcessingDialog : Window
-    {
+    public partial class ProcessingDialog : Window, IProgressReporter
+	{
         private readonly CancellationTokenSource _cts = new();
         public CancellationToken CancellationToken => _cts.Token;
         public IProgress<double> Progress { get; }
@@ -14,7 +15,7 @@ namespace TextProcessor.Views
             Progress = new Progress<double>(value => ProgressBar.Value = value);
         }
 
-		public void UpdateProgress(long bytesRead, long totalBytes)
+		public void Report(long bytesRead, long totalBytes)
 		{
 			double percent = totalBytes == 0 ? 0 : (bytesRead / (double)totalBytes) * 100;
 

@@ -1,14 +1,10 @@
 ﻿using System.IO;
-using System.Windows.Shapes;
 using TextProcessor.Interfaces;
 
 namespace TextProcessor.Services
 {
 	/// <summary>
 	/// Responsible for reading, tokenising, counting.
-	/// Accepts a file path, tokeniser, word counter.
-	/// Reports progress via IProgress<double>.
-	/// Supports cancellation via CancellationToken.
 	/// </summary>
 	public class FileProcessor : IFileProcessor
 	{
@@ -23,7 +19,7 @@ namespace TextProcessor.Services
 
 		public async Task<IReadOnlyDictionary<string, int>> ProcessFileAsync(
 			string filePath,
-			Action<long, long> reportProgress,
+			IProgressReporter progressReporter,
 			CancellationToken token)
 		{
 			var wordCounter = new WordCounter();
@@ -36,7 +32,7 @@ namespace TextProcessor.Services
 			{
 				var words = _tokeniser.TokeniseLine(line);
 				wordCounter.CountWords(words);
-				reportProgress?.Invoke(bytesRead, totalBytes);
+				progressReporter.Report(bytesRead, totalBytes);
 			}
 
 			return wordCounter.GetCounts();

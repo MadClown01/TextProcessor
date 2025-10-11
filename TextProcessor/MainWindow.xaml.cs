@@ -39,7 +39,7 @@ namespace TextProcessor.Views
 			{
 				var counts = await _fileProcessor.ProcessFileAsync(
 					filePath,
-					dialog.UpdateProgress,
+					dialog,
 					dialog.CancellationToken
 					);
 
