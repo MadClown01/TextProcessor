@@ -22,8 +22,8 @@
 		<DataGrid x:Name="ResultsDataGrid" Grid.Row="2" IsReadOnly="True" VerticalScrollBarVisibility="Auto"
           AutoGenerateColumns="False" CanUserAddRows="False" Margin="10">
 			<DataGrid.Columns>
-				<DataGridTextColumn Header="Word" Binding="{Binding Word}" Width="*"/>
-				<DataGridTextColumn Header="Count" Binding="{Binding Count}" Width="Auto"/>
+				<DataGridTextColumn Header="Word" Binding="{Binding Word}" SortMemberPath="Word" Width="*"/>
+				<DataGridTextColumn Header="Count" Binding="{Binding Count}" SortMemberPath="Count" Width="Auto"/>
 			</DataGrid.Columns>
 		</DataGrid>
 	</Grid>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
-using System.Text;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Data;
 using TextProcessor.Interfaces;
 
 namespace TextProcessor.Views
@@ -76,26 +77,45 @@ namespace TextProcessor.Views
 			}
 		}
 
-		private async Task PrintCountsAsync(IReadOnlyDictionary<string, int> counts, CancellationToken token)
+		private async Task PrintCountsAsync(
+			IReadOnlyDictionary<string, int> counts,
+			CancellationToken token)
 		{
-			var list = new List<WordCountItem>();
-
-			await Task.Run(() =>
+			// Build the list in a background thread
+			var list = await Task.Run(() =>
 			{
+				var tempList = new List<WordCountItem>();
 				foreach (var kvp in counts)
 				{
 					token.ThrowIfCancellationRequested();
-					list.Add(new WordCountItem { Word = kvp.Key, Count = kvp.Value });
+					tempList.Add(new WordCountItem {
+						Word = kvp.Key,
+						Count = kvp.Value
+						});
 				}
+				return tempList;
 			}, token);
 
 			ResultsDataGrid.ItemsSource = list;
-		}
-	}
-}
 
-public class WordCountItem
-{
-	public string Word { get; set; } = string.Empty;
-	public int Count { get; set; }
+			var view = CollectionViewSource.GetDefaultView(ResultsDataGrid.ItemsSource);
+			if (view != null)
+			{
+				view.SortDescriptions.Clear();
+				view.SortDescriptions.Add(
+					new SortDescription(
+						nameof(WordCountItem.Count),
+						ListSortDirection.Descending
+						)
+					);
+			}
+			ResultsDataGrid.Items.Refresh();
+		}
+
+	}
+	public class WordCountItem
+	{
+		public string Word { get; set; } = string.Empty;
+		public int Count { get; set; }
+	}
 }
