@@ -15,7 +15,7 @@ namespace TextProcessor.Views
 			InitializeComponent();
 		}
 
-		private void OnSelectFileClick(object sender, RoutedEventArgs e)
+		private async void OnSelectFileClick(object sender, RoutedEventArgs e)
 		{
 			var dialog = new OpenFileDialog
 			{
@@ -27,11 +27,11 @@ namespace TextProcessor.Views
 
 			if (result == true) // user clicked OK
 			{
-				ProcessFile(dialog.FileName);
+				await ProcessFileAsync(dialog.FileName);
 			}
 		}
 
-		private async void ProcessFile(string filePath)
+		private async Task ProcessFileAsync(string filePath)
 		{
 			var dialog = new ProcessingDialog { Owner = this };
 			dialog.Show();
