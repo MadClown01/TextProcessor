@@ -27,5 +27,11 @@ namespace TextProcessor.Views
 		{
 			_cts.Cancel();
 		}
+
+		protected override void OnClosed(EventArgs e)
+		{
+			base.OnClosed(e);
+			_cts.Dispose();
+		}
 	}
 }
