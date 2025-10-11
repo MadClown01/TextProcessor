@@ -83,5 +83,16 @@ namespace TextProcessor.Views
 			base.OnClosed(e);
 			_cts.Dispose();
 		}
+
+		protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+		{
+			// If the user clicked X, cancel processing
+			if (!_cts.IsCancellationRequested)
+			{
+				_cts.Cancel();
+			}
+
+			base.OnClosing(e);
+		}
 	}
 }
