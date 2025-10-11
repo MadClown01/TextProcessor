@@ -28,8 +28,12 @@ namespace TextProcessor.Views
 				percent = (bytesRead / (double)totalBytes) * 100;
 			}
 
-			ProgressBar.Value = percent;
-			StatusText.Text = $"{bytesRead:N0} / {totalBytes:N0} bytes processed ({percent:F1}%)";
+			// Update UI on the main thread
+			Dispatcher.Invoke(() =>
+			{
+				ProgressBar.Value = percent;
+				StatusText.Text = $"{bytesRead:N0} / {totalBytes:N0} bytes processed ({percent:F1}%)";
+			});
 		}
 
 		private async void ProcessingDialog_Loaded(object sender, RoutedEventArgs e)
@@ -44,11 +48,13 @@ namespace TextProcessor.Views
 				);
 				return;
 			}
-
-
+			
 			try
 			{
-				Counts = await _fileProcessor.ProcessFileAsync(_filePath, this, _cts.Token);
+				// Process the file in a background thread
+				Counts = await Task.Run(
+					() => _fileProcessor.ProcessFileAsync(_filePath,this, _cts.Token)
+				);
 				DialogResult = true;
 			}
 			catch (OperationCanceledException)
