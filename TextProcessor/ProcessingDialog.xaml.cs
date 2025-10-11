@@ -29,7 +29,7 @@ namespace TextProcessor.Views
 			}
 
 			// Update UI on the main thread
-			Dispatcher.Invoke(() =>
+			Dispatcher.BeginInvoke(() =>
 			{
 				ProgressBar.Value = percent;
 				StatusText.Text = $"{bytesRead:N0} / {totalBytes:N0} bytes processed ({percent:F1}%)";
@@ -51,9 +51,10 @@ namespace TextProcessor.Views
 			
 			try
 			{
-				// Process the file in a background thread
-				Counts = await Task.Run(
-					() => _fileProcessor.ProcessFileAsync(_filePath,this, _cts.Token)
+				Counts = await _fileProcessor.ProcessFileAsync( // No background thread here, ProcessFileAsync doesn't block
+					_filePath,
+					this,
+					_cts.Token
 				);
 				DialogResult = true;
 			}
