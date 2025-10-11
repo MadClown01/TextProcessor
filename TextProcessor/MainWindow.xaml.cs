@@ -56,7 +56,7 @@ namespace TextProcessor.Views
 					dialog.CancellationToken
 					);
 
-				await PrintCountsAsync(counts, dialog.CancellationToken);
+				await DisplayCountsAsync(counts, dialog.CancellationToken);
 
 				dialog.Close();
 
@@ -89,7 +89,7 @@ namespace TextProcessor.Views
 			}
 		}
 
-		private async Task PrintCountsAsync(
+		private async Task DisplayCountsAsync(
 			IReadOnlyDictionary<string, int> counts,
 			CancellationToken token)
 		{
