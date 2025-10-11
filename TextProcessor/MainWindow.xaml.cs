@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using System.ComponentModel;
-using System.IO;
 using System.Windows;
 using System.Windows.Data;
 using TextProcessor.Interfaces;
@@ -19,6 +18,7 @@ namespace TextProcessor.Views
 
 		private async void OnSelectFileClick(object sender, RoutedEventArgs e)
 		{
+			// Step 1: Show file open dialog
 			var dialog = new OpenFileDialog
 			{
 				Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*",
@@ -27,64 +27,28 @@ namespace TextProcessor.Views
 
 			bool? result = dialog.ShowDialog();
 
-			if (result == true) // user clicked OK
+			if (result != true) // user didn't select a file
 			{
-				await ProcessFileAsync(dialog.FileName);
-			}
-		}
-
-		private async Task ProcessFileAsync(string filePath)
-		{
-			if (!File.Exists(filePath))
-			{
-				MessageBox.Show(
-					$"File {filePath} no longer exists or is inaccessible.",
-					"Error",
-					MessageBoxButton.OK,
-					MessageBoxImage.Error
-					);
 				return;
 			}
 
-			var dialog = new ProcessingDialog { Owner = this };
-			dialog.Show();
-			try
+			string filePath = dialog.FileName;
+
+			// Step 2: Show processing dialog
+			var processingDialog = new ProcessingDialog(_fileProcessor, filePath)
 			{
-				var counts = await _fileProcessor.ProcessFileAsync(
-					filePath,
-					dialog,
-					dialog.CancellationToken
-					);
+				Owner = this
+			};
+			bool? processed = processingDialog.ShowDialog(); // modal
 
-				await DisplayCountsAsync(counts, dialog.CancellationToken);
-
-				dialog.Close();
-
+			if (processed == true)
+			{
+				await DisplayCountsAsync(processingDialog.Counts, CancellationToken.None);
 				MessageBox.Show(
-					$"Counted occurrences for {counts.Count} unique words",
+					$"Counted occurrences for {processingDialog.Counts.Count} unique words.",
 					"Success",
 					MessageBoxButton.OK,
 					MessageBoxImage.Information
-					);
-			}
-			catch (OperationCanceledException)
-			{
-				dialog.Close();
-				MessageBox.Show(
-					"Processing canceled.",
-					"Canceled",
-					MessageBoxButton.OK,
-					MessageBoxImage.Information
-					);
-			}
-			catch (Exception ex)
-			{
-				dialog.Close();
-				MessageBox.Show(
-					$"Failed to read file:\n{ex.Message}",
-					"Error",
-					MessageBoxButton.OK,
-					MessageBoxImage.Error
 					);
 			}
 		}
@@ -100,10 +64,12 @@ namespace TextProcessor.Views
 				foreach (var kvp in counts)
 				{
 					token.ThrowIfCancellationRequested();
-					tempList.Add(new WordCountItem {
-						Word = kvp.Key,
-						Count = kvp.Value
-						});
+					tempList.Add(
+						new WordCountItem {
+							Word = kvp.Key,
+							Count = kvp.Value
+							}
+						);
 				}
 				return tempList;
 			}, token);
