@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 using TextProcessor.Interfaces;
 
 namespace TextProcessor.Services
@@ -23,18 +25,25 @@ namespace TextProcessor.Services
 			CancellationToken token)
 		{
 			var wordCounter = new WordCounter();
-			var totalBytes = new FileInfo(filePath).Length; // Does this need to be async?
+			var totalBytes = new FileInfo(filePath).Length;
 
-			//var bytesRead = reader.BaseStream.Position;
-			//progress = (double)bytesRead / totalBytes;
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+			var lastReportTime = stopwatch.Elapsed;
 
 			await foreach ((string line, long bytesRead) in _fileReader.ReadLinesAsync(filePath, token))
 			{
 				var words = _tokeniser.TokeniseLine(line);
 				wordCounter.CountWords(words);
-				progressReporter.Report(bytesRead, totalBytes);
-			}
 
+				var elapsed = stopwatch.Elapsed;
+				if (elapsed - lastReportTime >= TimeSpan.FromMilliseconds(10)) // 100 updates per second max
+				{
+					progressReporter.Report(bytesRead, totalBytes);
+					lastReportTime = elapsed;
+				}
+			}
+			stopwatch.Stop();
 			return wordCounter.GetCounts();
 		}
 	}
