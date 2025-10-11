@@ -10,17 +10,18 @@
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 
-		<TextBlock Grid.Row="0" Text="Choose a text file to count the occurrences of each word in the file."
-		   Margin="0, 10, 0, 10"
-		   TextWrapping="Wrap"
-		   HorizontalAlignment="Center"/>
+		<TextBlock Grid.Row="0"
+			Text="Select a file to count word occurrences."
+			Margin="5"
+			TextWrapping="Wrap"
+			HorizontalAlignment="Center"/>
 		
-		<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 10, 0, 10">
-			<Button Content="Select file" Click="OnSelectFileClick" Margin="5"/>
+		<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5" >
+			<Button Content="Select file" Click="OnSelectFileClick" Padding="10,5"/>
 		</StackPanel>
 
 		<DataGrid x:Name="ResultsDataGrid" Grid.Row="2" IsReadOnly="True" VerticalScrollBarVisibility="Auto"
-          AutoGenerateColumns="False" CanUserAddRows="False" Margin="10">
+		  AutoGenerateColumns="False" CanUserAddRows="False" Margin="10">
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Word" Binding="{Binding Word}" SortMemberPath="Word" Width="*"/>
 				<DataGridTextColumn Header="Count" Binding="{Binding Count}" SortMemberPath="Count" Width="Auto"/>
