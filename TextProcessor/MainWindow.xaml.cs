@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Data;
 using TextProcessor.Interfaces;
@@ -34,6 +35,17 @@ namespace TextProcessor.Views
 
 		private async Task ProcessFileAsync(string filePath)
 		{
+			if (!File.Exists(filePath))
+			{
+				MessageBox.Show(
+					$"File {filePath} no longer exists or is inaccessible.",
+					"Error",
+					MessageBoxButton.OK,
+					MessageBoxImage.Error
+					);
+				return;
+			}
+
 			var dialog = new ProcessingDialog { Owner = this };
 			dialog.Show();
 			try
