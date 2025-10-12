@@ -95,6 +95,7 @@ namespace TextProcessor.Views
 		{
 			base.OnClosed(e);
 			_cts.Dispose();
+			Loaded -= ProcessingDialog_Loaded;
 		}
 
 		protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
