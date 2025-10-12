@@ -1,5 +1,4 @@
-﻿using TextProcessor.Interfaces;
-using TextProcessor.Services;
+﻿using TextProcessor.Services;
 
 namespace TextProcessorTesting
 {
@@ -30,13 +29,13 @@ namespace TextProcessorTesting
 			string content = "1:1 Adam Seth Enos\r\n1:2 Cainan Adam Seth Iared";
 			await File.WriteAllTextAsync(_tempFilePath, content);
 			var processor = new FileProcessor(new FileReader(), new Tokenizer());
-			var progressReporter = new TestProgressReporter();
+			var progress = new Progress<(long, long)>(p => { });
 			IReadOnlyDictionary<string, int> counts = new Dictionary<string, int>();
 
 			// Act
 			counts = await processor.ProcessFileAsync(
 				_tempFilePath,
-				progressReporter,
+				progress,
 				CancellationToken.None
 				);
 
@@ -61,13 +60,13 @@ namespace TextProcessorTesting
 			await File.WriteAllTextAsync(_tempFilePath, content);
 
 			var processor = new FileProcessor(new FileReader(), new Tokenizer());
-			var progressReporter = new TestProgressReporter();
+			var progress = new Progress<(long, long)>(p => { });
 			using var cts = new CancellationTokenSource();
 
 			// Act
 			var processingTask = processor.ProcessFileAsync(
 				_tempFilePath,
-				progressReporter,
+				progress,
 				cts.Token
 			);
 
@@ -79,9 +78,5 @@ namespace TextProcessorTesting
 				async () => await processingTask
 			);
 		}
-	}
-	public class TestProgressReporter : IProgressReporter
-	{
-		public void Report(long bytesRead, long totalBytes) { }
 	}
 }

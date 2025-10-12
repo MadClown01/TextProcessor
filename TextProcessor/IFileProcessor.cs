@@ -4,7 +4,7 @@
 	{
 		public Task<IReadOnlyDictionary<string, int>> ProcessFileAsync(
 			string filePath,
-			IProgressReporter progressReporter,
+			IProgress<(long, long)> progress,
 			CancellationToken token
 		);
 	}

@@ -4,7 +4,7 @@ using TextProcessor.Interfaces;
 
 namespace TextProcessor.Views
 {
-	public partial class ProcessingDialog : Window, IProgressReporter
+	public partial class ProcessingDialog : Window
 	{
 		private readonly CancellationTokenSource _cts = new();
 		private readonly IFileProcessor _fileProcessor;
@@ -17,18 +17,6 @@ namespace TextProcessor.Views
 			_filePath = filePath;
 			InitializeComponent();
 			Loaded += OnLoaded;
-		}
-
-		public void Report(long bytesRead, long totalBytes)
-		{
-			double percent = totalBytes > 0 ? (bytesRead / (double)totalBytes) * 100 : 0;
-
-			// Update UI on the main thread
-			Dispatcher.BeginInvoke(() =>
-			{
-				ProgressBar.Value = percent;
-				StatusText.Text = $"{bytesRead:N0} / {totalBytes:N0} bytes processed ({percent:F1}%)";
-			});
 		}
 
 		private void OnLoaded(object sender, RoutedEventArgs e)
@@ -48,13 +36,20 @@ namespace TextProcessor.Views
 				);
 				return;
 			}
-			
+
+			var progress = new Progress<(long bytesRead, long totalBytes)>(p =>
+			{
+				double percent = p.totalBytes > 0 ? (p.bytesRead / (double)p.totalBytes) * 100 : 0;
+				ProgressBar.Value = percent;
+				StatusText.Text = $"{p.bytesRead:N0} / {p.totalBytes:N0} bytes processed ({percent:F1}%)";
+			});
+
 			try
 			{
 				// No background thread call needed here because ProcessFileAsync doesn't block
 				Counts = await _fileProcessor.ProcessFileAsync(
 					_filePath,
-					this,
+					progress,
 					_cts.Token
 				);
 				

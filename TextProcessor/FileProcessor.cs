@@ -21,7 +21,7 @@ namespace TextProcessor.Services
 
 		public async Task<IReadOnlyDictionary<string, int>> ProcessFileAsync(
 			string filePath,
-			IProgressReporter progressReporter,
+			IProgress<(long, long)> progress,
 			CancellationToken token)
 		{
 			var wordCounter = new WordCounter();
@@ -39,7 +39,7 @@ namespace TextProcessor.Services
 				var elapsed = stopwatch.Elapsed;
 				if (elapsed - lastReportTime >= TimeSpan.FromMilliseconds(REPORT_INTERVAL_MILLISECONDS))
 				{
-					progressReporter.Report(bytesRead, totalBytes);
+					progress?.Report((bytesRead, totalBytes));
 					lastReportTime = elapsed;
 				}
 			}
