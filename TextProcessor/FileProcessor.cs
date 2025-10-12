@@ -12,7 +12,7 @@ namespace TextProcessor.Services
 	{
 		private readonly IFileReader _fileReader;
 		private readonly ITokeniser _tokeniser;
-		private const int REPORT_INTERVAL_MILISECONDS = 15; // report progress every 15ms, so 67 updates per second max
+		private const int REPORT_INTERVAL_MILLISECONDS = 15; // report progress at most every 15ms
 
 		public FileProcessor(IFileReader fileReader, ITokeniser tokeniser)
 		{
@@ -38,7 +38,7 @@ namespace TextProcessor.Services
 				wordCounter.CountWords(words);
 
 				var elapsed = stopwatch.Elapsed;
-				if (elapsed - lastReportTime >= TimeSpan.FromMilliseconds(REPORT_INTERVAL_MILISECONDS))
+				if (elapsed - lastReportTime >= TimeSpan.FromMilliseconds(REPORT_INTERVAL_MILLISECONDS))
 				{
 					progressReporter.Report(bytesRead, totalBytes);
 					lastReportTime = elapsed;
