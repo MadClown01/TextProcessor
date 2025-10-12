@@ -4,7 +4,12 @@ namespace TextProcessor.Services
 {
 	public class WordCounter : IWordCounter
 	{
-		private Dictionary<string, int> _wordCounts = new Dictionary<string, int>();
+		private readonly Dictionary<string, int> _wordCounts;
+		public WordCounter()
+		{
+			_wordCounts = new Dictionary<string, int>();
+		}
+
 		public void CountWords(IEnumerable<string> tokens)
 		{
 			foreach (var token in tokens)

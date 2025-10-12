@@ -19,7 +19,7 @@ namespace TextProcessor.Services
 			_tokenizer = tokeniser;
 		}
 
-		public async Task<IReadOnlyDictionary<string, int>> ProcessFileAsync(
+		public async Task<(IReadOnlyDictionary<string, int>, Double)> ProcessFileAsync(
 			string filePath,
 			IProgress<(long, long)> progress,
 			CancellationToken token)
@@ -44,7 +44,7 @@ namespace TextProcessor.Services
 				}
 			}
 			stopwatch.Stop();
-			return wordCounter.GetCounts();
+			return (wordCounter.GetCounts(), stopwatch.Elapsed.TotalSeconds);
 		}
 	}
 }

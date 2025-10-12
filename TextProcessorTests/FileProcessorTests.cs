@@ -33,7 +33,7 @@ namespace TextProcessorTesting
 			IReadOnlyDictionary<string, int> counts = new Dictionary<string, int>();
 
 			// Act
-			counts = await processor.ProcessFileAsync(
+			(counts, var totalElapsed) = await processor.ProcessFileAsync(
 				_tempFilePath,
 				progress,
 				CancellationToken.None
@@ -77,6 +77,29 @@ namespace TextProcessorTesting
 			await Assert.ThrowsExceptionAsync<TaskCanceledException>(
 				async () => await processingTask
 			);
+		}
+
+		[TestMethod]
+		public async Task FileProcessor_CountsElapsedTime()
+		{
+			// Arrange
+			string content = "1:1 Adam Seth Enos\r\n1:2 Cainan Adam Seth Iared";
+			var processor = new FileProcessor(new FileReader(), new Tokenizer());
+			var progress = new Progress<(long, long)>(p => { });
+			IReadOnlyDictionary<string, int> counts = new Dictionary<string, int>();
+			double totalElapsedTime = 0.0;
+
+			await File.WriteAllTextAsync(_tempFilePath, content);
+
+			// Act
+			(counts, totalElapsedTime) = await processor.ProcessFileAsync(
+				_tempFilePath,
+				progress,
+				CancellationToken.None
+			);
+
+			// Assert
+			Assert.AreNotEqual(totalElapsedTime, 0);
 		}
 	}
 }

@@ -45,7 +45,9 @@ namespace TextProcessor.Views
 			{
 				await DisplayCountsAsync(processingDialog.Counts, CancellationToken.None);
 				MessageBox.Show(
-					$"Counted occurrences for {processingDialog.Counts.Count} unique words.",
+					$"Successfully read file {filePath}." +
+					$"\nCounted occurrences for {processingDialog.Counts.Count} unique words " +
+					$"in {processingDialog.TotalElapsed:F2} seconds.",
 					"Success",
 					MessageBoxButton.OK,
 					MessageBoxImage.Information

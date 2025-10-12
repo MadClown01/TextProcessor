@@ -10,6 +10,7 @@ namespace TextProcessor.Views
 		private readonly IFileProcessor _fileProcessor;
 		private readonly string _filePath;
 		public IReadOnlyDictionary<string, int> Counts { get; private set; } = new Dictionary<string, int>();
+		public double TotalElapsed { get; private set; } = 0.0;
 
 		public ProcessingDialog(IFileProcessor fileProcessor, string filePath)
 		{
@@ -37,23 +38,30 @@ namespace TextProcessor.Views
 				return;
 			}
 
-			var progress = new Progress<(long bytesRead, long totalBytes)>(p =>
+			var progress = new Progress<(long bytesRead, long bytesTotal)>(p =>
 			{
-				double percent = p.totalBytes > 0 ? (p.bytesRead / (double)p.totalBytes) * 100 : 0;
+				double percent = p.bytesTotal > 0 ? (p.bytesRead / (double)p.bytesTotal) * 100 : 0;
 				ProgressBar.Value = percent;
-				StatusText.Text = $"{p.bytesRead:N0} / {p.totalBytes:N0} bytes processed ({percent:F1}%)";
+
+				string displayBytesRead = FormatBytes(p.bytesRead);
+				string displayBytesTotal = FormatBytes(p.bytesTotal);
+				StatusText.Text = $"{displayBytesRead} / {displayBytesTotal} processed ({percent:F1}%)";
 			});
 
 			try
 			{
 				// No background thread call needed here because ProcessFileAsync doesn't block
-				Counts = await _fileProcessor.ProcessFileAsync(
+				(Counts, var totalElapsed) = await _fileProcessor.ProcessFileAsync(
 					_filePath,
 					progress,
 					_cts.Token
 				);
-				
-				DialogResult = true;
+
+				if (IsLoaded)
+				{
+					// Only set DialogResult if the window is still open
+					DialogResult = true;
+				}
 			}
 			catch (OperationCanceledException)
 			{
@@ -108,6 +116,15 @@ namespace TextProcessor.Views
 			}
 
 			base.OnClosing(e);
+		}
+
+		private string FormatBytes(long bytes)
+		{
+			if (bytes == 0) return "0 B";
+			string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+			int order = (int)Math.Floor(Math.Log(bytes, 1024));
+			double len = bytes / Math.Pow(1024, order);
+			return $"{len:F2} {sizes[order]}";
 		}
 	}
 }
