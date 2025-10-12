@@ -51,7 +51,8 @@ namespace TextProcessor.Views
 			
 			try
 			{
-				Counts = await _fileProcessor.ProcessFileAsync( // No background thread here, ProcessFileAsync doesn't block
+				// No background thread call needed here because ProcessFileAsync doesn't block
+				Counts = await _fileProcessor.ProcessFileAsync(
 					_filePath,
 					this,
 					_cts.Token
