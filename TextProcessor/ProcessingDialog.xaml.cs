@@ -9,7 +9,6 @@ namespace TextProcessor.Views
 		private readonly CancellationTokenSource _cts = new();
 		private readonly IFileProcessor _fileProcessor;
 		private readonly string _filePath;
-		public CancellationToken CancellationToken => _cts.Token;
 		public IReadOnlyDictionary<string, int> Counts { get; private set; } = new Dictionary<string, int>();
 
 		public ProcessingDialog(IFileProcessor fileProcessor, string filePath)
