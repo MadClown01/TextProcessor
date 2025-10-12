@@ -56,27 +56,33 @@ namespace TextProcessor.Views
 					this,
 					_cts.Token
 				);
+
+				if (!IsLoaded) return; // User already closed window
 				DialogResult = true;
 			}
 			catch (OperationCanceledException)
 			{
-				DialogResult = false;
 				MessageBox.Show(
 					"Processing canceled.",
 					"Canceled",
 					MessageBoxButton.OK,
 					MessageBoxImage.Information
 				);
+
+				if (!IsLoaded) return; // User already closed window
+				DialogResult = false;
 			}
 			catch (Exception ex)
 			{
-				DialogResult = false;
 				MessageBox.Show(
 					$"Failed to read file:\n{ex.Message}",
 					"Error",
 					MessageBoxButton.OK,
 					MessageBoxImage.Error
 				);
+
+				if (!IsLoaded) return; // User already closed window
+				DialogResult = false;
 			}
 		}
 
