@@ -1,4 +1,4 @@
-﻿namespace TextProcessorTests
+﻿namespace TextProcessorTesting
 {
 	/// <summary>
 	/// Confirm that usage of files behaves in the current environment as expected.

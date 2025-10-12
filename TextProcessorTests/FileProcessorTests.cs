@@ -1,7 +1,7 @@
 ﻿using TextProcessor.Interfaces;
 using TextProcessor.Services;
 
-namespace TextProcessor.Testing
+namespace TextProcessorTesting
 {
 	[TestClass]
 	public class FileProcessorTests
