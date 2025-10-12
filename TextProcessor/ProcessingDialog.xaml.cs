@@ -22,11 +22,7 @@ namespace TextProcessor.Views
 
 		public void Report(long bytesRead, long totalBytes)
 		{
-			double percent = 0;
-			if (totalBytes > 0)
-			{
-				percent = (bytesRead / (double)totalBytes) * 100;
-			}
+			double percent = totalBytes > 0 ? (bytesRead / (double)totalBytes) * 100 : 0;
 
 			// Update UI on the main thread
 			Dispatcher.BeginInvoke(() =>
