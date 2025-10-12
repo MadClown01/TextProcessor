@@ -13,7 +13,7 @@ namespace TextProcessor
 			// In a more complex application, Microsoft.Extensions.DependencyInjection could be used.
 
 			IFileReader fileReader = new FileReader();
-			ITokeniser tokeniser = new Tokeniser();
+			ITokenizer tokeniser = new Tokenizer();
 			IFileProcessor fileProcessor = new FileProcessor(fileReader, tokeniser);
 			MainWindow window = new MainWindow(fileProcessor);
 			window.Show();

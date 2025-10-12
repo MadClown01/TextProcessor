@@ -29,7 +29,7 @@ namespace TextProcessorTesting
 			// Arrange
 			string content = "1:1 Adam Seth Enos\r\n1:2 Cainan Adam Seth Iared";
 			await File.WriteAllTextAsync(_tempFilePath, content);
-			var processor = new FileProcessor(new FileReader(), new Tokeniser());
+			var processor = new FileProcessor(new FileReader(), new Tokenizer());
 			var progressReporter = new TestProgressReporter();
 			IReadOnlyDictionary<string, int> counts = new Dictionary<string, int>();
 
@@ -60,7 +60,7 @@ namespace TextProcessorTesting
 			);
 			await File.WriteAllTextAsync(_tempFilePath, content);
 
-			var processor = new FileProcessor(new FileReader(), new Tokeniser());
+			var processor = new FileProcessor(new FileReader(), new Tokenizer());
 			var progressReporter = new TestProgressReporter();
 			using var cts = new CancellationTokenSource();
 

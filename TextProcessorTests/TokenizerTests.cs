@@ -3,17 +3,17 @@
 namespace TextProcessorTesting
 {
 	[TestClass]
-	public class TokeniserTests
+	public class TokenizerTests
 	{
 		[TestMethod]
-		public void Tokeniser_SplitsWordsCorrectly()
+		public void Tokenizer_SplitsWordsCorrectly()
 		{
 			// Arrange
 			string line = "The quick brown fox";
-			var tokeniser = new Tokeniser();
+			var tokenizer = new Tokenizer();
 
 			// Act
-			var tokens = tokeniser.TokeniseLine(line).ToArray();
+			var tokens = tokenizer.TokenizeLine(line).ToArray();
 
 			// Assert
 			CollectionAssert.AreEqual(
@@ -23,15 +23,15 @@ namespace TextProcessorTesting
 		}
 
 		[TestMethod]
-		public void Tokeniser_HandlesExoticWhitespaceCharactersCorrectly()
+		public void Tokenizer_HandlesExoticWhitespaceCharactersCorrectly()
 		{
 			// Arrange
 			// Testing with space, tab, LF, CR, vertical tab, form feed, double space
 			string line = "The quick\tbrown\nfox\rjumps\vover\fthe  lazy";
-			var tokeniser = new Tokeniser();
+			var tokenizer = new Tokenizer();
 
 			// Act
-			var tokens = tokeniser.TokeniseLine(line).ToArray();
+			var tokens = tokenizer.TokenizeLine(line).ToArray();
 
 			// Assert
 			CollectionAssert.AreEqual(
@@ -41,14 +41,14 @@ namespace TextProcessorTesting
 		}
 
 		[TestMethod]
-		public void Tokeniser_HandlesTaskExample()
+		public void Tokenizer_HandlesTaskExample()
 		{
 			// Arrange
 			string line = "1:1 Adam Seth Enos\r\n1:2 Cainan Adam Seth Iared";
-			var tokeniser = new Tokeniser();
+			var tokenizer = new Tokenizer();
 
 			// Act
-			var tokens = tokeniser.TokeniseLine(line).ToArray();
+			var tokens = tokenizer.TokenizeLine(line).ToArray();
 
 			// Assert
 			CollectionAssert.AreEqual(

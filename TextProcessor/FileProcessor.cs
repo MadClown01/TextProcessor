@@ -10,10 +10,10 @@ namespace TextProcessor.Services
 	public class FileProcessor : IFileProcessor
 	{
 		private readonly IFileReader _fileReader;
-		private readonly ITokeniser _tokeniser;
+		private readonly ITokenizer _tokeniser;
 		private const int REPORT_INTERVAL_MILLISECONDS = 15; // report progress at most every 15ms
 
-		public FileProcessor(IFileReader fileReader, ITokeniser tokeniser)
+		public FileProcessor(IFileReader fileReader, ITokenizer tokeniser)
 		{
 			_fileReader = fileReader;
 			_tokeniser = tokeniser;
@@ -33,7 +33,7 @@ namespace TextProcessor.Services
 
 			await foreach ((string line, long bytesRead) in _fileReader.ReadLinesAsync(filePath, token))
 			{
-				var words = _tokeniser.TokeniseLine(line);
+				var words = _tokeniser.TokenizeLine(line);
 				wordCounter.CountWords(words);
 
 				var elapsed = stopwatch.Elapsed;

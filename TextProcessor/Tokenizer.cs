@@ -2,9 +2,9 @@
 
 namespace TextProcessor.Services
 {
-	public class Tokeniser : ITokeniser
+	public class Tokenizer : ITokenizer
 	{
-		public IEnumerable<string> TokeniseLine(string line)
+		public IEnumerable<string> TokenizeLine(string line)
 		{
 			foreach (var word in line.Split((char[])null, StringSplitOptions.RemoveEmptyEntries))
 			{
