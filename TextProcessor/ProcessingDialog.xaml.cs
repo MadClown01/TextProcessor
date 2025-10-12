@@ -36,7 +36,12 @@ namespace TextProcessor.Views
 			});
 		}
 
-		private async void OnLoaded(object sender, RoutedEventArgs e)
+		private void OnLoaded(object sender, RoutedEventArgs e)
+		{
+			_ = ProcessAsync();
+		}
+
+		private async Task ProcessAsync()
 		{
 			if (!File.Exists(_filePath))
 			{
