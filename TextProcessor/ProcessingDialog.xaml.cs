@@ -17,7 +17,7 @@ namespace TextProcessor.Views
 			_fileProcessor = fileProcessor;
 			_filePath = filePath;
 			InitializeComponent();
-			Loaded += ProcessingDialog_Loaded;
+			Loaded += OnLoaded;
 		}
 
 		public void Report(long bytesRead, long totalBytes)
@@ -36,7 +36,7 @@ namespace TextProcessor.Views
 			});
 		}
 
-		private async void ProcessingDialog_Loaded(object sender, RoutedEventArgs e)
+		private async void OnLoaded(object sender, RoutedEventArgs e)
 		{
 			if (!File.Exists(_filePath))
 			{
@@ -95,7 +95,7 @@ namespace TextProcessor.Views
 		{
 			base.OnClosed(e);
 			_cts.Dispose();
-			Loaded -= ProcessingDialog_Loaded;
+			Loaded -= OnLoaded;
 		}
 
 		protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
