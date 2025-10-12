@@ -9,6 +9,9 @@ namespace TextProcessor
 	{
 		private void ApplicationStartup(object sender, StartupEventArgs args)
 		{
+			// For simplicity, services are manually wired here.
+			// In a more complex application, Microsoft.Extensions.DependencyInjection could be used.
+
 			IFileReader fileReader = new FileReader();
 			ITokeniser tokeniser = new Tokeniser();
 			IFileProcessor fileProcessor = new FileProcessor(fileReader, tokeniser);
