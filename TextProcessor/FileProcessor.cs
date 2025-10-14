@@ -27,6 +27,7 @@ namespace TextProcessor.Services
 			var wordCounter = new WordCounter();
 			var totalBytes = new FileInfo(filePath).Length;
 
+			// Stopwatch throttles UI updates, otherwise too many progress reports flood the UI thread
 			var stopwatch = new Stopwatch();
 			stopwatch.Start();
 			var lastReportTime = stopwatch.Elapsed;
