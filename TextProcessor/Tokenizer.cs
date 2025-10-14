@@ -7,7 +7,7 @@ namespace TextProcessor.Services
 		public IEnumerable<string> TokenizeLine(string line)
 		{
 			foreach (var word in line.Split(
-				(char[])null, // null as char[] separator means split on any whitespace
+				(char[])null!, // null as char[] separator means split on any whitespace
 				StringSplitOptions.RemoveEmptyEntries
 				))
 			{
