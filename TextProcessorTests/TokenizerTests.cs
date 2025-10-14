@@ -56,5 +56,22 @@ namespace TextProcessorTesting
 				tokens
 			);
 		}
+
+		[TestMethod]
+		public void Tokenizer_HandlesEmptyLine()
+		{
+			// Arrange
+			string line = String.Empty;
+			var tokenizer = new Tokenizer();
+
+			// Act
+			var tokens = tokenizer.TokenizeLine(line).ToArray();
+
+			// Assert
+			CollectionAssert.AreEqual(
+				Array.Empty<string>(),
+				tokens
+			);
+		}
 	}
 }
