@@ -18,7 +18,7 @@ namespace TextProcessor.Views
 
 		private async void OnSelectFileClick(object sender, RoutedEventArgs e)
 		{
-			// Step 1: Show file open dialog
+			// Show file open dialog
 			var dialog = new OpenFileDialog
 			{
 				Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*",
@@ -34,7 +34,7 @@ namespace TextProcessor.Views
 
 			string filePath = dialog.FileName;
 
-			// Step 2: Show processing dialog
+			// Show processing dialog
 			var processingDialog = new ProcessingDialog(_fileProcessor, filePath)
 			{
 				Owner = this
